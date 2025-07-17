@@ -2,26 +2,9 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8" />
-  <title>ユーザー別文字列保存・復元（Krates 公開版）</title>
+  <title>テキスト保存（試作）</title>
 </head>
 <body>
-  <h2>🔐 ログイン</h2>
-  <input type="text" id="username" placeholder="ユーザー名を入力（例：aさん）" />
-  <button onclick="login()">ログイン</button>
-
-  <hr />
-  <h2>文字列保存・復元ツール</h2>
-  <textarea id="textArea" rows="6" cols="60" placeholder="ここに文字列を入力..."></textarea><br><br>
-  <button onclick="saveData()">保存する</button>
-  <button onclick="loadData()">復元する</button>
-  <!--送信プログラム
-<form action="https://formcarry.com/s/abc123xyz" method="POST">
-  <input type="text" name="name" placeholder="お名前">
-  <textarea name="message" placeholder="メッセージ"></textarea>
-  <button type="submit">送信</button>
-</form>
-  -->
-  <!-- modify this form HTML as you wish and place wherever you want your form -->
 <form
   action="https://formcarry.com/s/_JThRNdZp01"
   method="POST"
@@ -29,100 +12,13 @@
 >
   <label>
     Your UserName:
-    <!-- name each of your inputs as you wish -->
     <input type="text" name="UserName">
   </label>
   <label>
     Your message:
     <textarea name="message"></textarea>
   </label>
-  <!-- your other form fields go here -->
   <button type="submit">Send</button>
 </form>
-  <!---->
-
-  <p id="status">🔄 初期化待ち...</p>
-
-  <script>
-    // 🔧 ここをあなたの krate ID に置き換えてください
-    const KRATE_ID = 'eaafef96d8c158196c4b'; // 例: abc123xyz456
-
-    let currentUser = null;
-    let allData = {};
-
-    function login() {
-      const username = document.getElementById('username').value.trim();
-      if (!username) {
-        document.getElementById('status').textContent = '❌ ユーザー名を入力してください';
-        return;
-      }
-      currentUser = username;
-      loadData();
-    }
-
-    async function loadData() {
-      if (!KRATE_ID) {
-        document.getElementById('status').textContent = '❌ KRATE_IDが設定されていません';
-        return;
-      }
-      try {
-        const res = await fetch(`https://io.krat.es/api/krates/${KRATE_ID}`, {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        });
-
-        if (!res.ok && res.status !== 404) throw new Error('復元に失敗');
-
-        const data = res.ok ? await res.json() : {};
-        allData = data || {};
-
-        if (currentUser && allData[currentUser]) {
-          document.getElementById('textArea').value = allData[currentUser];
-          document.getElementById('status').textContent = `✅ ようこそ、${currentUser} さん（データを復元しました）`;
-        } else {
-          document.getElementById('textArea').value = '';
-          document.getElementById('status').textContent = `✅ ようこそ、${currentUser} さん（新規ユーザー）`;
-        }
-      } catch (e) {
-        document.getElementById('status').textContent = '❌ 復元中にエラーが発生しました';
-        console.error(e);
-      }
-    }
-
-    async function saveData() {
-      if (!currentUser) {
-        document.getElementById('status').textContent = '❌ まずログインしてください';
-        return;
-      }
-
-      const text = document.getElementById('textArea').value;
-      allData[currentUser] = text;
-
-      try {
-        const res = await fetch(`https://io.krat.es/api/krates/${KRATE_ID}`, {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(allData)
-        });
-
-        if (res.ok) {
-          document.getElementById('status').textContent = '✅ 保存しました！';
-        } else {
-          throw new Error('保存に失敗');
-        }
-      } catch (e) {
-        document.getElementById('status').textContent = '❌ 保存中にエラーが発生しました';
-        console.error(e);
-      }
-    }
-
-    window.onload = () => {
-      document.getElementById('status').textContent = '🔔 ログインしてください';
-    };
-  </script>
 </body>
 </html>
