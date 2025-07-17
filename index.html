@@ -14,11 +14,30 @@
   <textarea id="textArea" rows="6" cols="60" placeholder="ここに文字列を入力..."></textarea><br><br>
   <button onclick="saveData()">保存する</button>
   <button onclick="loadData()">復元する</button>
-  <!--送信プログラム-->
+  <!--送信プログラム
 <form action="https://formcarry.com/s/abc123xyz" method="POST">
   <input type="text" name="name" placeholder="お名前">
   <textarea name="message" placeholder="メッセージ"></textarea>
   <button type="submit">送信</button>
+</form>
+  -->
+  <!-- modify this form HTML as you wish and place wherever you want your form -->
+<form
+  action="https://formcarry.com/s/_JThRNdZp01"
+  method="POST"
+  enctype="multipart/form-data"
+>
+  <label>
+    Your email:
+    <!-- name each of your inputs as you wish -->
+    <input type="email" name="email">
+  </label>
+  <label>
+    Your message:
+    <textarea name="message"></textarea>
+  </label>
+  <!-- your other form fields go here -->
+  <button type="submit">Send</button>
 </form>
   <!---->
 
