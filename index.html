@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head><meta charset="UTF-8" /><title>Krates 版 ユーザー別文字列保存・復元ツール</title></head>
+<body>
+  <h2>🔐 ログイン</h2>
+  <input type="text" id="username" placeholder="ユーザー名を入力（例：aさん）" />
+  <button onclick="login()">ログイン</button>
+  <hr/>
+  <h2>文字列保存・復元ツール</h2>
+  <textarea id="textArea" rows="6" cols="60" placeholder="ここに文字列を入力..."></textarea><br/><br/>
+  <button onclick="saveData()">保存する</button>
+  <button onclick="loadData()">復元する</button>
+  <p id="status">🔄 初期化待ち...</p>
+
+  <script>
+    const KRATE_ID = 'ab9288a5897b3058287f';       // Krates ダッシュボードで取得
+    const API_TOKEN = '82b4f060-06fc-4e9d-a8cc-201cffa96b07';     // 書き込みに必要
+
+    let currentUser = null;
+    let allData = {};
+
+    function login() {
+      const u = document.getElementById('username').value.trim();
+      if (!u) {
+        status('❌ ユーザー名を入力してください');
+        return;
+      }
+      currentUser = u;
+      loadData();
+    }
+
+    function status(msg) {
+      document.getElementById('status').textContent = msg;
+    }
+
+    async function loadData() {
+      if (!KRATE_ID) {
+        status('❌ Krate IDが未設定です');
+        return;
+      }
+      try {
+        const res = await fetch(`https://api.krat.es/v1/krates/${KRATE_ID}`, {
+          method: 'GET',
+          headers: { 'Accept': 'application/json' }
+        });
+        if (!res.ok) throw new Error('復元に失敗');
+        allData = await res.json();
+
+        const txt = allData[currentUser] || '';
+        document.getElementById('textArea').value = txt;
+        status(`✅ ようこそ、${currentUser}さん${txt ? '（データを復元しました）' : '（新規ユーザー）'}`);
+      } catch(e) {
+        console.error(e);
+        status('❌ 復元中にエラーが発生しました');
+      }
+    }
+
+    async function saveData() {
+      if (!currentUser) {
+        status('❌ まずログインしてください');
+        return;
+      }
+      const text = document.getElementById('textArea').value;
+      allData[currentUser] = text;
+
+      try {
+        const res = await fetch(`https://api.krat.es/v1/krates/${KRATE_ID}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${API_TOKEN}`
+          },
+          body: JSON.stringify(allData)
+        });
+        if (!res.ok) throw new Error('保存に失敗');
+        status('✅ 保存しました！');
+      } catch(e) {
+        console.error(e);
+        status('❌ 保存中にエラーが発生しました');
+      }
+    }
+
+    window.onload = () => status('🔔 ログインしてください');
+  </script>
+</body>
+</html>
