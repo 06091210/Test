@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8" />
-  <title>ユーザー別文字列保存・復元（Krates 単一 krate）</title>
+  <title>ユーザー別文字列保存・復元（Krates 公開版）</title>
 </head>
 <body>
   <h2>🔐 ログイン</h2>
@@ -18,7 +18,9 @@
   <p id="status">🔄 初期化待ち...</p>
 
   <script>
-    const KRATE_ID = 'eaafef96d8c158196c4b'; // Krates の krate ID に置き換えてください
+    // 🔧 ここをあなたの krate ID に置き換えてください
+    const KRATE_ID = 'eaafef96d8c158196c4b'; // 例: abc123xyz456
+
     let currentUser = null;
     let allData = {};
 
@@ -44,7 +46,9 @@
             'Content-Type': 'application/json'
           }
         });
+
         if (!res.ok && res.status !== 404) throw new Error('復元に失敗');
+
         const data = res.ok ? await res.json() : {};
         allData = data || {};
 
@@ -66,6 +70,7 @@
         document.getElementById('status').textContent = '❌ まずログインしてください';
         return;
       }
+
       const text = document.getElementById('textArea').value;
       allData[currentUser] = text;
 
@@ -77,6 +82,7 @@
           },
           body: JSON.stringify(allData)
         });
+
         if (res.ok) {
           document.getElementById('status').textContent = '✅ 保存しました！';
         } else {
