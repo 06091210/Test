@@ -57,20 +57,11 @@
   const data = { name, message };
 
   try {
-    /*const response = await fetch(API_URL, {
+    const response = await fetch(API_URL, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data)
-    });*/
-
-    const response = await fetch(API_URL, {
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json",
-    "Authorization": "Bearer NN8OblxOSZq!%zuKVL@RvZ4b1Jed_1LduQrEwP9v60hEWZ2Ph__uJ1rrtTl6wjlt"
-  },
-  body: JSON.stringify(data)
-});
+    });
 
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
