@@ -6,7 +6,7 @@
 </head>
 <body>
 <h2>保存</h2>
-  <textarea id="UserName"></textarea>
+  <textarea id="Username"></textarea>
   <button onclick="copyText()">LogIn</button>
 <form
   action="https://formcarry.com/s/_JThRNdZp01"
@@ -19,7 +19,6 @@
   </label>
   <label>
     message:
-    <!--<textarea name="message"></textarea>-->
     <input type="text" name="message">
   </label>
   <button type="submit">Send</button>
@@ -39,7 +38,7 @@
   <div id="messages">読み込み中...</div>
   <script>
     function copyText() {
-      const text = document.getElementById("UserName").value;
+      const text = document.getElementById("Username").value;
       document.getElementById("UserName").value = text;
     }
     const API_URL = "https://api.sheetbest.com/sheets/3a58e982-d42d-4a9e-90a3-9182b5c3c9be";
