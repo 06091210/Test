@@ -46,27 +46,36 @@
     const API_URL = "https://api.sheetbest.com/sheets/3a58e982-d42d-4a9e-90a3-9182b5c3c9be"; // あなたのAPI URLに差し替え
 
     async function submitMessage() {
-      const name = document.getElementById("name").value;
-      const message = document.getElementById("message").value;
+  const name = document.getElementById("name").value;
+  const message = document.getElementById("message").value;
 
-      if (!name || !message) {
-        alert("名前とメッセージを入力してください");
-        return;
-      }
+  if (!name || !message) {
+    alert("名前とメッセージを入力してください");
+    return;
+  }
 
-      const data = { name, message };
+  const data = { name, message };
 
-      await fetch(API_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data)
-      });
+  try {
+    const response = await fetch(API_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data)
+    });
 
-      document.getElementById("name").value = "";
-      document.getElementById("message").value = "";
-
-      loadMessages();
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
     }
+
+    document.getElementById("name").value = "";
+    document.getElementById("message").value = "";
+    loadMessages();
+  } catch (error) {
+    console.error("送信エラー:", error);
+    alert("メッセージの送信に失敗しました。コンソールを確認してください。");
+  }
+}
+
 
     async function loadMessages() {
       const response = await fetch(API_URL);
