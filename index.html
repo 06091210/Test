@@ -1,45 +1,41 @@
-<!--<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8" />
-  <title>テキスト保存（試作）</title>
+  <meta charset="UTF-8">
+  <title>テキスト保存・取得（試作）</title>
 </head>
 <body>
+<h2>保存</h2>
 <form
   action="https://formcarry.com/s/_JThRNdZp01"
   method="POST"
   enctype="multipart/form-data"
 >
   <label>
-    Your UserName:
+    UserName:
     <input type="text" name="UserName">
   </label>
   <label>
-    Your message:
+    message:
     <textarea name="message"></textarea>
   </label>
   <button type="submit">Send</button>
 </form>
-</body>
-</html>-->
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-  <meta charset="UTF-8">
-  <title>SpreadSheetデータ取得</title>
-  <!--
-<style>
-    body { font-family: sans-serif; }
-  </style>
+<!--
+<textarea id="myTextarea" rows="4" cols="50">ここにテキストを入力</textarea>
+<input type="text" id="myInput">
+<button onclick="copyText()">コピー</button>
+<script>
+  function copyText() {
+    const text = document.getElementById("myTextarea").value;
+    document.getElementById("myInput").value = text;
+  }
+</script>
 -->
-</head>
-<body>
-  <h1>メッセージ送信</h1>
-  <!--<input type="text" id="name" placeholder="名前">-->
+  <h2>取得</h2>
   <div id="messages">読み込み中...</div>
-
   <script>
-    const API_URL = "https://api.sheetbest.com/sheets/3a58e982-d42d-4a9e-90a3-9182b5c3c9be"; // あなたのAPI URLに差し替え
+    const API_URL = "https://api.sheetbest.com/sheets/3a58e982-d42d-4a9e-90a3-9182b5c3c9be";
 
     async function loadMessages() {
       const response = await fetch(API_URL);
@@ -54,8 +50,7 @@
         container.appendChild(div);
       });
     }
-
-    loadMessages(); // 初回表示
+    loadMessages();
   </script>
 </body>
 </html>
