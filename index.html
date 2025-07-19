@@ -25,8 +25,8 @@
   <div id="login-area">
     <h2>ログイン / 新規登録</h2>
     <input type="hidden" id="username" placeholder="ユーザー名">
-    <button id="login-btn">ログイン</button>
-    <button id="register-btn">新規登録</button>
+    <button id="auto-login-btn">ログイン</button>
+    <!--<button id="register-btn">新規登録</button>-->
     <p id="login-msg" style="color:red;"></p>
   </div>
   <div id="editor-area" class="hidden">
@@ -101,6 +101,7 @@
     editorArea.classList.remove('hidden');
     saveMsg.textContent = '';
   }
+  /*新規登録・ログイン
   registerBtn.addEventListener('click', () => {
   const username = usernameInput.value.trim();
   if (!username) {
@@ -133,6 +134,37 @@ loginBtn.addEventListener('click', () => {
   showEditor();
   textContent.value = users[username].texts || '';
 });
+*/
+    //統一ボタン
+    const autoLoginBtn = document.getElementById('auto-login-btn');
+autoLoginBtn.addEventListener('click', () => {
+  const username = usernameInput.value.trim();
+  if (!username) {
+    loginMsg.textContent = 'ユーザー名を入力してください';
+    loginMsg.style.color = 'red';
+    return;
+  }
+
+  const users = getUsers();
+
+  // ユーザーが存在する → ログイン処理
+  if (users[username]) {
+    currentUser = username;
+    loginMsg.textContent = 'ログイン成功';
+    loginMsg.style.color = 'green';
+    textContent.value = users[username].texts || '';
+    showEditor();
+  } else {
+    // 存在しない → 自動登録処理
+    users[username] = { texts: '' };
+    saveUsers(users);
+    currentUser = username;
+    loginMsg.textContent = '新規登録完了 & ログインしました';
+    loginMsg.style.color = 'green';
+    showEditor();
+  }
+});
+
   saveBtn.addEventListener('click', () => {
     if (!currentUser) return;
     const users = getUsers();
