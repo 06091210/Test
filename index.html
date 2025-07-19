@@ -11,7 +11,8 @@
     }
     body { font-family: sans-serif; margin: 20px; }
     #app { max-width: 600px; margin: auto; }
-    input, textarea { width: 100%; padding: 8px; margin: 6px 0; }
+    /*input, textarea { width: 100%; padding: 8px; margin: 6px 0; }*/
+    input, textarea { width: 100%; padding: 8px; margin: 6px 0; box-sizing: border-box; }
     button { padding: 8px 12px; margin-top: 8px; }
     .hidden { display: none; }
 </style>
@@ -24,7 +25,6 @@
   <div id="login-area">
     <h2>ログイン / 新規登録</h2>
     <input type="hidden" id="username" placeholder="ユーザー名">
-    <input type="password" id="password" placeholder="パスワード">
     <button id="login-btn">ログイン</button>
     <button id="register-btn">新規登録</button>
     <p id="login-msg" style="color:red;"></p>
@@ -90,51 +90,49 @@
     localStorage.setItem('users', JSON.stringify(users));
   }
   function showLogin() {
-    loginArea.classList.remove('hidden');
-    editorArea.classList.add('hidden');
-    loginMsg.textContent = '';
-    saveMsg.textContent = '';
-    usernameInput.value = '';
-    passwordInput.value = '';
-  }
+  loginArea.classList.remove('hidden');
+  editorArea.classList.add('hidden');
+  loginMsg.textContent = '';
+  saveMsg.textContent = '';
+  usernameInput.value = '';
+}
   function showEditor() {
     loginArea.classList.add('hidden');
     editorArea.classList.remove('hidden');
     saveMsg.textContent = '';
   }
   registerBtn.addEventListener('click', () => {
-    const username = usernameInput.value.trim();
-    const password = passwordInput.value;
-    if (!username || !password) {
-      loginMsg.textContent = 'ユーザー名とパスワードを入力してください';
-      return;
-    }
-    const users = getUsers();
-    if (users[username]) {
-      loginMsg.textContent = 'そのユーザー名は既に使われています';
-      return;
-    }
-    users[username] = { password, texts: '' };
-    saveUsers(users);
-    loginMsg.style.color = 'green';
-    loginMsg.textContent = '登録成功！ログインしてください';
-  });
-  loginBtn.addEventListener('click', () => {
-    const username = usernameInput.value.trim();
-    const password = passwordInput.value;
-    if (!username || !password) {
-      loginMsg.textContent = 'ユーザー名とパスワードを入力してください';
-      return;
-    }
-    const users = getUsers();
-    if (!users[username] || users[username].password !== password) {
-      loginMsg.textContent = 'ユーザー名かパスワードが違います';
-      return;
-    }
-    currentUser = username;
-    showEditor();
-    textContent.value = users[username].texts || '';
-  });
+  const username = usernameInput.value.trim();
+  if (!username) {
+    loginMsg.textContent = 'ユーザー名を入力してください';
+    return;
+  }
+  const users = getUsers();
+  if (users[username]) {
+    loginMsg.textContent = 'そのユーザー名は既に使われています';
+    return;
+  }
+  users[username] = { texts: '' }; // パスワード削除
+  saveUsers(users);
+  loginMsg.style.color = 'green';
+  loginMsg.textContent = '登録成功！ログインしてください';
+});
+
+loginBtn.addEventListener('click', () => {
+  const username = usernameInput.value.trim();
+  if (!username) {
+    loginMsg.textContent = 'ユーザー名を入力してください';
+    return;
+  }
+  const users = getUsers();
+  if (!users[username]) {
+    loginMsg.textContent = 'そのユーザー名は存在しません。登録してください';
+    return;
+  }
+  currentUser = username;
+  showEditor();
+  textContent.value = users[username].texts || '';
+});
   saveBtn.addEventListener('click', () => {
     if (!currentUser) return;
     const users = getUsers();
