@@ -61,9 +61,7 @@
 
       messages.reverse().forEach(msg => {
         const div = document.createElement("div");
-        if (${msg.name} === document.getElementById("Username").value) {
         div.innerHTML = `<strong>${msg.name}</strong>: ${msg.KSポイント}`;
-      }
         container.appendChild(div);
       });
     }
