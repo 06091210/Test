@@ -33,7 +33,7 @@
     <h2>テキストエディタ</h2>
     <textarea id="text-content" rows="10" placeholder="ここにテキストを入力"></textarea>
     <button id="save-btn">保存</button>
-    <button id="logout-btn">ログアウト</button>
+    <!--<button id="logout-btn">ログアウト</button>-->
     <p id="save-msg" style="color:green;"></p>
   </div>
 </div>
@@ -79,7 +79,7 @@
   const loginMsg = document.getElementById('login-msg');
   const textContent = document.getElementById('text-content');
   const saveBtn = document.getElementById('save-btn');
-  const logoutBtn = document.getElementById('logout-btn');
+  //const logoutBtn = document.getElementById('logout-btn');
   const saveMsg = document.getElementById('save-msg');
   let currentUser = null;
   function getUsers() {
@@ -141,10 +141,10 @@ loginBtn.addEventListener('click', () => {
     saveMsg.textContent = '保存しました！';
     setTimeout(() => saveMsg.textContent = '', 2000);
   });
-  logoutBtn.addEventListener('click', () => {
+  /*logoutBtn.addEventListener('click', () => {
     currentUser = null;
     showLogin();
-  });
+  });*/
   // 初期画面はログイン
   showLogin();
     
