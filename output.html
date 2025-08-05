@@ -5,14 +5,9 @@
   <title>Output</title>
 </head>
 <body>
-  <h2>保存された値：</h2>
   <div id="output">（ここに表示されます）</div>
-
   <script>
-    // 親に値をリクエスト
     parent.postMessage({ type: "requestValue" }, "*");
-
-    // 値を受け取ったら表示
     window.addEventListener("message", (event) => {
       if (event.data.type === "setValue") {
         document.getElementById("output").textContent = event.data.value || "値がありません";
