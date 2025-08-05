@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>Input</title>
+</head>
+<body>
+  <h2>値を入力してください：</h2>
+  <textarea id="inputArea"></textarea>
+  <br>
+  <button onclick="sendValue()">送信</button>
+
+  <script>
+    function sendValue() {
+      const value = document.getElementById("inputArea").value;
+      parent.postMessage({ type: "valueInput", value: value }, "*");
+      alert("送信しました！");
+    }
+  </script>
+</body>
+</html>
